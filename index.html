@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XD Magazine</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #444;
+      color: white;
+      text-align: center;
+      padding: 1em 0;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #333;
+      padding: 0.5em 0;
+    }
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    section {
+      padding: 2em;
+      text-align: center;
+    }
+    form {
+      margin: 1em auto;
+      width: 80%;
+    }
+    textarea, input {
+      width: 100%;
+      margin: 0.5em 0;
+      padding: 0.5em;
+    }
+    button {
+      padding: 0.5em 1em;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #posts {
+      margin-top: 1em;
+      text-align: left;
+    }
+    #posts p {
+      border-bottom: 1px solid #ddd;
+      padding: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>XD Magazine</h1>
+    <p>"Think Outside the Site" - Entertaining Filipino Stories</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#forum">Forum</a>
+    <a href="#feedback">Feedback</a>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About XD Magazine</h2>
+      <p>At XD Magazine, we aim to share narratives highlighting Filipino challenges and successes.</p>
+    </section>
+
+    <section id="forum">
+      <h2>Forum</h2>
+      <form id="postForm">
+        <textarea id="post" placeholder="Write your message here..." required></textarea>
+        <button type="submit">Post</button>
+      </form>
+      <div id="posts">
+        <!-- Forum posts will appear here -->
+      </div>
+    </section>
+
+    <section id="feedback">
+      <h2>Send Us Feedback</h2>
+      <form id="feedbackForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <label for="message">Message:</label>
+        <textarea id="message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 XD Magazine</p>
+  </footer>
+
+  <script>
+    // Handle forum posts
+    document.addEventListener('DOMContentLoaded', () => {
+      const postForm = document.getElementById('postForm');
+      const postsDiv = document.getElementById('posts');
+
+      // Load saved posts from localStorage
+      const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+      savedPosts.forEach(post => {
+        const p = document.createElement('p');
+        p.textContent = post;
+        postsDiv.appendChild(p);
+      });
+
+      // Add new post
+      postForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const postText = document.getElementById('post').value;
+        const p = document.createElement('p');
+        p.textContent = postText;
+        postsDiv.appendChild(p);
+
+        // Save to localStorage
+        savedPosts.push(postText);
+        localStorage.setItem('posts', JSON.stringify(savedPosts));
+
+        // Clear input
+        document.getElementById('post').value = '';
+      });
+    });
+
+    // Handle feedback form
+    document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+
+      // Create mailto link
+      const mailtoLink = `mailto:domeguerra872@gmail.com?subject=Feedback from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}`;
+      window.location.href = mailtoLink;
+
+      // Clear inputs
+      document.getElementById('name').value = '';
+      document.getElementById('message').value = '';
+      alert('Feedback form opened in your email client!');
+    });
+  </script>
+</body>
+</html>
